@@ -114,6 +114,19 @@ function renderProducts(products) {
             const f = getVal('foto');
             if (f && f.trim() !== '') fotos.push(convertDriveUrl(f.trim()));
         }
+        
+        let videoUrl = getVal('video') || null;
+        if (videoUrl && videoUrl.trim() !== '') {
+            videoUrl = videoUrl.trim();
+            // Si es un link de Drive, lo convertimos a formato preview para el iframe
+            const driveRegex = /[-\w]{25,}/;
+            const match = videoUrl.match(driveRegex);
+            if (match && match[0] && videoUrl.includes('drive.google.com')) {
+                videoUrl = `https://drive.google.com/file/d/${match[0]}/preview`;
+            }
+        } else {
+            videoUrl = null;
+        }
 
         if (!nombre) return;
         const finalId = id || nombre;
@@ -131,6 +144,7 @@ function renderProducts(products) {
         agrupados[finalId].variantes.push({
             color: color || 'Único',
             fotos: fotos,
+            video: videoUrl,
             foto: fotos.length > 0 ? fotos[0] : ''
         });
     });
@@ -232,20 +246,41 @@ function renderProductDetail(agrupados) {
     document.getElementById('pdp-price').innerText = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 }).format(precioNumero);
     
     const mainImg = document.getElementById('pdp-main-image');
+    const mainVideo = document.getElementById('pdp-main-video');
     const prevBtn = document.getElementById('carousel-prev');
     const nextBtn = document.getElementById('carousel-next');
     
     let currentPhotoIndex = 0;
-    let currentFotos = prod.variantes[0].fotos || [];
-    if (currentFotos.length === 0 && prod.variantes[0].foto) {
-        currentFotos = [prod.variantes[0].foto];
+    let currentMedia = [];
+    
+    function loadMediaFromVariant(vari) {
+        currentMedia = [];
+        if (vari.fotos && vari.fotos.length > 0) {
+            vari.fotos.forEach(f => currentMedia.push({ type: 'image', url: f }));
+        } else if (vari.foto) {
+            currentMedia.push({ type: 'image', url: vari.foto });
+        }
+        
+        if (vari.video) {
+            currentMedia.push({ type: 'video', url: vari.video });
+        }
     }
     
+    loadMediaFromVariant(prod.variantes[0]);
+    
     function updateCarousel() {
-        if (!currentFotos || currentFotos.length === 0) return;
-        mainImg.src = currentFotos[currentPhotoIndex];
+        if (!currentMedia || currentMedia.length === 0) return;
+        const mediaItem = currentMedia[currentPhotoIndex];
         
-        if (currentFotos.length > 1) {
+        if (mediaItem.type === 'image') {
+            if(mainImg) { mainImg.src = mediaItem.url; mainImg.style.display = 'block'; }
+            if(mainVideo) { mainVideo.src = ''; mainVideo.style.display = 'none'; }
+        } else if (mediaItem.type === 'video') {
+            if(mainImg) { mainImg.style.display = 'none'; }
+            if(mainVideo) { mainVideo.src = mediaItem.url; mainVideo.style.display = 'block'; }
+        }
+        
+        if (currentMedia.length > 1) {
             if(prevBtn) prevBtn.style.display = 'flex';
             if(nextBtn) nextBtn.style.display = 'flex';
         } else {
@@ -256,16 +291,16 @@ function renderProductDetail(agrupados) {
     
     if (prevBtn) {
         prevBtn.onclick = () => {
-            if (!currentFotos || currentFotos.length === 0) return;
-            currentPhotoIndex = (currentPhotoIndex - 1 + currentFotos.length) % currentFotos.length;
+            if (!currentMedia || currentMedia.length === 0) return;
+            currentPhotoIndex = (currentPhotoIndex - 1 + currentMedia.length) % currentMedia.length;
             updateCarousel();
         };
     }
     
     if (nextBtn) {
         nextBtn.onclick = () => {
-            if (!currentFotos || currentFotos.length === 0) return;
-            currentPhotoIndex = (currentPhotoIndex + 1) % currentFotos.length;
+            if (!currentMedia || currentMedia.length === 0) return;
+            currentPhotoIndex = (currentPhotoIndex + 1) % currentMedia.length;
             updateCarousel();
         };
     }
@@ -313,10 +348,7 @@ function renderProductDetail(agrupados) {
             selectedColor = v.color;
             selectedFoto = v.foto;
             
-            currentFotos = v.fotos || [];
-            if (currentFotos.length === 0 && v.foto) {
-                currentFotos = [v.foto];
-            }
+            loadMediaFromVariant(v);
             currentPhotoIndex = 0;
             updateCarousel();
         };
