@@ -399,6 +399,9 @@ body {
     .hero-tussy {
         height: 60vh;
     }
+    .hero-left-img, .hero-right-img {
+        display: none;
+    }
     .hero-center-content {
         left: 50%;
         transform: translate(-50%, -50%);
