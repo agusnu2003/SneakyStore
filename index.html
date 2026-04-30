@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sneaky Store - Remeras</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- Papa Parse for CSV -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+</head>
+
+<body>
+    <header class="header">
+        <div class="logo">SNEAKY STORE</div>
+        <nav class="nav">
+            <a href="#productos" class="nav-link">SHOP</a>
+            <a href="#" class="nav-link">NEW IN</a>
+            <a href="#" class="nav-link">STORES</a>
+            <a href="#" class="nav-link">FAQS</a>
+        </nav>
+        <div class="header-icons">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <a href="#" id="cart-icon-btn" style="position: relative; color: inherit;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+                <span id="cart-badge" class="cart-badge" style="display: none;">0</span>
+            </a>
+        </div>
+    </header>
+
+    <div class="top-banner">
+        ENVÍO GRATIS A PARTIR DE $120.000
+    </div>
+
+    <main class="main-content">
+        <section class="hero-tussy">
+            <!-- Capa oscura semitransparente si hiciera falta, pero lo manejamos en CSS -->
+            <div class="hero-left-img">
+                <img src="images/mario.png" alt="Mario">
+            </div>
+
+            <div class="hero-center-content">
+                <h1>®SNEAKY STORE</h1>
+                <h2 class="motto">DE GAMERS PARA GAMERS</h2>
+                <div class="sub-motto">
+                </div>
+            </div>
+
+            <div class="hero-right-img">
+                <img src="images/donkey.png" alt="Donkey Kong">
+            </div>
+
+
+        </section>
+
+        <section id="productos" class="products">
+            <h2 class="section-title">ÚLTIMOS LANZAMIENTOS</h2>
+            <div id="loader" class="loader">Cargando productos desde el servidor...</div>
+            <div id="product-grid" class="product-grid">
+                <!-- Products will be injected here by JS -->
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Sneaky Store. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- Estructura del Carrito Lateral (Offcanvas) -->
+    <div id="cart-overlay" class="cart-overlay"></div>
+    <div id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h2>TU CARRITO</h2>
+            <button id="close-cart-btn" class="close-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" width="24" height="24">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg></button>
+        </div>
+        <div id="cart-items" class="cart-items">
+            <!-- Items inyectados por cart.js -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>TOTAL</span>
+                <span id="cart-total-price">$0</span>
+            </div>
+            <button id="checkout-btn" class="buy-btn" style="width: 100%;">FINALIZAR COMPRA</button>
+        </div>
+    </div>
+
+    <script src="cart.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
