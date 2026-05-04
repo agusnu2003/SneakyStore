@@ -87,7 +87,7 @@ function convertDriveUrl(url) {
 }
 
 function renderProducts(products) {
-    const isProductPage = window.location.pathname.includes('product.html');
+    const isProductPage = !!document.getElementById('pdp-container');
     
     // Agrupar productos
     const agrupados = {};
