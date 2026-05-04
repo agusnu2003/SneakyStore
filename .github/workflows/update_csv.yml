@@ -1,0 +1,29 @@
+name: Update Products CSV
+
+on:
+  schedule:
+    - cron: '0 4 * * *' # Todos los días a las 4:00 AM
+  workflow_dispatch: # Permitir ejecución manual desde la pestaña Actions
+
+jobs:
+  update-csv:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Download CSV from Google Sheets
+        run: |
+          curl -L "https://docs.google.com/spreadsheets/d/e/2PACX-1vTBxqFjIMXxKJCLZwxdKZbOl6RjTZPU8_CSvTnsMAMM1AxXmSWIwRKLBeH1w8xmyINMvUFxS1fT3HDU/pub?gid=0&single=true&output=csv" -o products.csv
+
+      - name: Commit and push if changed
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add products.csv
+          if git diff --quiet && git diff --staged --quiet; then
+            echo "No hay cambios en los productos."
+          else
+            git commit -m "chore: actualizar products.csv desde Google Sheets"
+            git push
+          fi
