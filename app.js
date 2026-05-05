@@ -1,7 +1,4 @@
-const CSV_URL = './products.csv';
-// Google Sheets URL for reference/backup:
-// https://docs.google.com/spreadsheets/d/e/2PACX-1vTBxqFjIMXxKJCLZwxdKZbOl6RjTZPU8_CSvTnsMAMM1AxXmSWIwRKLBeH1w8xmyINMvUFxS1fT3HDU/pub?gid=0&single=true&output=csv
-
+const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTBxqFjIMXxKJCLZwxdKZbOl6RjTZPU8_CSvTnsMAMM1AxXmSWIwRKLBeH1w8xmyINMvUFxS1fT3HDU/pub?gid=0&single=true&output=csv';
 
 document.addEventListener('DOMContentLoaded', () => {
     fetchProducts();
@@ -87,7 +84,7 @@ function convertDriveUrl(url) {
 }
 
 function renderProducts(products) {
-    const isProductPage = !!document.getElementById('pdp-container');
+    const isProductPage = window.location.pathname.includes('product.html');
     
     // Agrupar productos
     const agrupados = {};
