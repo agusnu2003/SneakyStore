@@ -380,17 +380,6 @@ body {
 }
 
 /* Responsiveness */
-@media (max-width: 1200px) {
-    .hero-left-img {
-        left: -10%;
-        height: 85%;
-    }
-    .hero-right-img {
-        right: -10%;
-        height: 75%;
-    }
-}
-
 @media (max-width: 900px) {
     .hero-center-content h1 {
         font-size: 3.5rem;
@@ -399,8 +388,7 @@ body {
         display: none;
     }
     .hero-left-img, .hero-right-img {
-        opacity: 0.2;
-        pointer-events: none; /* Para que no interfieran con clics */
+        opacity: 0.3;
     }
 }
 
